@@ -1,8 +1,6 @@
-import { useCallback, useEffect, useRef } from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 import styled from 'styled-components';
-import { Mesh, OrthographicCamera, PlaneGeometry, Scene, ShaderMaterial, TextureLoader, WebGLRenderer } from 'three';
-
-import { IMAGE_SRC } from './ImageSrc';
+import {Mesh, OrthographicCamera, PlaneGeometry, Scene, ShaderMaterial, TextureLoader, WebGLRenderer} from 'three';
 
 const _Wrapper = styled.div`
   aspect-ratio: 16 / 9;
@@ -18,7 +16,7 @@ export const HeroImage: React.FC = () => {
   const imageRef = useRef<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(document.createElement('canvas'));
 
-  const updateImage = useCallback(({ height, src, width }: { height: number; src: string; width: number }) => {
+  const updateImage = useCallback(({height, src, width}: {height: number; src: string; width: number}) => {
     const image = imageRef.current;
     if (image == null) {
       return;
@@ -47,7 +45,7 @@ export const HeroImage: React.FC = () => {
 
     const textureLoader = new TextureLoader();
 
-    textureLoader.load(IMAGE_SRC, (texture) => {
+    textureLoader.load("/assets/test.png", (texture) => {
       const geometry = new PlaneGeometry(2, 2);
       const material = new ShaderMaterial({
         fragmentShader: `uniform sampler2D tImage;
@@ -61,7 +59,7 @@ void main() {
   gl_FragColor = texture2D(tImage, vUv);
 }`,
         uniforms: {
-          tImage: { value: texture },
+          tImage: {value: texture},
         },
         vertexShader: `varying vec2 vUv;
 void main() {
@@ -72,7 +70,7 @@ void main() {
       const mesh = new Mesh(geometry, material);
       scene.add(mesh);
 
-      const renderer = new WebGLRenderer({ alpha: true, antialias: true, canvas: canvasRef.current });
+      const renderer = new WebGLRenderer({alpha: true, antialias: true, canvas: canvasRef.current});
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(width, height);
 
