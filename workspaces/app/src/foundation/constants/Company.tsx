@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-
+import {Color, Space, Typography} from '../styles/variables';
+import {Text} from '../components/Text';
 function fetchTextFile() {
   return fetch('/assets/company.txt') // テキストファイルのパスを指定
     .then(response => response.text())
@@ -19,7 +20,9 @@ function MyComponent() {
   }, []);
 
   return (
-    <React.Fragment>{content} < /React.Fragment>
+    <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
+      <React.Fragment>{content}< /React.Fragment>
+    </Text>
   );
 }
 

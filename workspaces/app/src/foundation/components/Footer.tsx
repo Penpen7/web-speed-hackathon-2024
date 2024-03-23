@@ -46,9 +46,7 @@ export const Footer: React.FC = () => {
           利用規約
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          <TERM />
-        </Text>
+        <TERM />
       </_Content>
     );
   };
@@ -60,9 +58,7 @@ export const Footer: React.FC = () => {
           お問い合わせ
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          <CONTACT />
-        </Text>
+        <CONTACT />
       </_Content>,
     );
   };
@@ -74,9 +70,7 @@ export const Footer: React.FC = () => {
           Q&A
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          <QUESTION />
-        </Text>
+        <QUESTION />
       </_Content>,
     );
   };
@@ -88,9 +82,7 @@ export const Footer: React.FC = () => {
           運営会社
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          <COMPANY />
-        </Text>
+        <COMPANY />
       </_Content>,
     );
   };
@@ -102,9 +94,7 @@ export const Footer: React.FC = () => {
           Cyber TOONとは
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          <OVERVIEW />
-        </Text>
+        <OVERVIEW />
       </_Content>,
     );
   };
