@@ -16,6 +16,7 @@ RUN pnpm build
 
 ENV PORT 8000
 EXPOSE 8000
+ENV NODE_ENV production
 
 ENTRYPOINT ["pnpm"]
 CMD ["start"]
