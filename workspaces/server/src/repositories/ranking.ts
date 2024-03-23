@@ -1,14 +1,14 @@
-import { HTTPException } from 'hono/http-exception';
-import type { Result } from 'neverthrow';
-import { err, ok } from 'neverthrow';
+import {HTTPException} from 'hono/http-exception';
+import type {Result} from 'neverthrow';
+import {err, ok} from 'neverthrow';
 
-import type { GetRankingListRequestQuery } from '@wsh-2024/schema/src/api/rankings/GetRankingListRequestQuery';
-import type { GetRankingListResponse } from '@wsh-2024/schema/src/api/rankings/GetRankingListResponse';
+import type {GetRankingListRequestQuery} from '@wsh-2024/schema/src/api/rankings/GetRankingListRequestQuery';
+import type {GetRankingListResponse} from '@wsh-2024/schema/src/api/rankings/GetRankingListResponse';
 
-import { getDatabase } from '../database/drizzle';
+import {getDatabase} from '../database/drizzle';
 
 type RankingRepositoryInterface = {
-  readAll(options: { query: GetRankingListRequestQuery }): Promise<Result<GetRankingListResponse, HTTPException>>;
+  readAll(options: {query: GetRankingListRequestQuery}): Promise<Result<GetRankingListResponse, HTTPException>>;
 };
 
 class RankingRepository implements RankingRepositoryInterface {
@@ -23,7 +23,7 @@ class RankingRepository implements RankingRepositoryInterface {
         },
         limit: options.query.limit,
         offset: options.query.offset,
-        orderBy(ranking, { asc }) {
+        orderBy(ranking, {asc}) {
           return asc(ranking.rank);
         },
         with: {
@@ -49,14 +49,6 @@ class RankingRepository implements RankingRepositoryInterface {
                   },
                 },
               },
-              episodes: {
-                columns: {
-                  chapter: true,
-                  description: true,
-                  id: true,
-                  name: true,
-                },
-              },
               image: {
                 columns: {
                   alt: true,
@@ -73,7 +65,7 @@ class RankingRepository implements RankingRepositoryInterface {
       if (cause instanceof HTTPException) {
         return err(cause);
       }
-      return err(new HTTPException(500, { cause, message: `Failed to read ranking list.` }));
+      return err(new HTTPException(500, {cause, message: `Failed to read ranking list.`}));
     }
   }
 }
