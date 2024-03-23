@@ -1,8 +1,8 @@
 import path from 'node:path';
 
 import findPackageDir from 'pkg-dir';
-import type { Options } from 'tsup';
-import { defineConfig } from 'tsup';
+import type {Options} from 'tsup';
+import {defineConfig} from 'tsup';
 
 export default defineConfig(async (): Promise<Options[]> => {
   const PACKAGE_DIR = (await findPackageDir(process.cwd()))!;
@@ -22,14 +22,14 @@ export default defineConfig(async (): Promise<Options[]> => {
       },
       format: 'cjs',
       metafile: true,
-      minify: false,
+      minify: true,
       noExternal: [/@wsh-2024\/.*/],
       outDir: OUTPUT_DIR,
       shims: true,
       sourcemap: true,
-      splitting: false,
+      splitting: true,
       target: 'node18',
-      treeshake: false,
+      treeshake: true,
     },
   ];
 });
