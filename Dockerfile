@@ -11,12 +11,11 @@ ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
 
 COPY . .
 RUN corepack enable pnpm
-RUN pnpm install
+RUN pnpm install --production
 RUN pnpm build
 
 ENV PORT 8000
 EXPOSE 8000
-ENV NODE_ENV production
 
 ENTRYPOINT ["pnpm"]
 CMD ["start"]
