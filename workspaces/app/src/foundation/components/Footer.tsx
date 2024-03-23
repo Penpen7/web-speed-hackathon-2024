@@ -1,20 +1,20 @@
-import { useSetAtom } from 'jotai';
-import React, { useId } from 'react';
+import {useSetAtom} from 'jotai';
+import React, {useId} from 'react';
 import styled from 'styled-components';
 
-import { DialogContentAtom } from '../atoms/DialogContentAtom';
-import { COMPANY } from '../constants/Company';
-import { CONTACT } from '../constants/Contact';
-import { OVERVIEW } from '../constants/Overview';
-import { QUESTION } from '../constants/Question';
-import { TERM } from '../constants/Term';
-import { Color, Space, Typography } from '../styles/variables';
+import {DialogContentAtom} from '../atoms/DialogContentAtom';
+import {COMPANY} from '../constants/Company';
+import CONTACT from '../constants/Contact';
+import {OVERVIEW} from '../constants/Overview';
+import {QUESTION} from '../constants/Question';
+import TERM from '../constants/Term';
+import {Color, Space, Typography} from '../styles/variables';
 
-import { Box } from './Box';
-import { Button } from './Button';
-import { Flex } from './Flex';
-import { Spacer } from './Spacer';
-import { Text } from './Text';
+import {Box} from './Box';
+import {Button} from './Button';
+import {Flex} from './Flex';
+import {Spacer} from './Spacer';
+import {Text} from './Text';
 
 const _Button = styled(Button)`
   color: ${Color.MONO_A};
@@ -41,15 +41,15 @@ export const Footer: React.FC = () => {
 
   const handleRequestToTermDialogOpen = () => {
     updateDialogContent(
-      <_Content aria-labelledby={termDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={termDialogA11yId} typography={Typography.NORMAL16}>
-          利用規約
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {TERM}
-        </Text>
-      </_Content>,
+        <_Content aria-labelledby={termDialogA11yId} role="dialog">
+          <Text as="h2" color={Color.MONO_100} id={termDialogA11yId} typography={Typography.NORMAL16}>
+            利用規約
+          </Text>
+          <Spacer height={Space * 1} />
+          <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
+            <TERM/>
+          </Text>
+        </_Content>
     );
   };
 
@@ -61,7 +61,7 @@ export const Footer: React.FC = () => {
         </Text>
         <Spacer height={Space * 1} />
         <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {CONTACT}
+          <CONTACT/>
         </Text>
       </_Content>,
     );
@@ -112,7 +112,7 @@ export const Footer: React.FC = () => {
   return (
     <Box as="footer" backgroundColor={Color.Background} p={Space * 1}>
       <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
-        <img alt="Cyber TOON" src="/assets/cyber-toon.svg" />
+        <img alt="Cyber TOON" loading="lazy" src="/assets/cyber-toon.svg" />
         <Flex align="start" direction="row" gap={Space * 1.5} justify="center">
           <_Button disabled={!isClient} onClick={handleRequestToTermDialogOpen}>
             利用規約
