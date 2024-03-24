@@ -100,7 +100,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <Box as="footer" backgroundColor={Color.Background} p={Space * 1}>
+    <Box as="footer" backgroundColor={Color.Background} p={Space * 1} height="90px">
       <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
         <img alt="Cyber TOON" loading="lazy" src="/assets/cyber-toon.svg" />
         <Flex align="start" direction="row" gap={Space * 1.5} justify="center">
@@ -121,6 +121,6 @@ export const Footer: React.FC = () => {
           </_Button>
         </Flex>
       </Flex>
-    </Box>
+    </Box >
   );
 };
