@@ -21,6 +21,8 @@ const _Wrapper = styled(Link)`
 const _ImgWrapper = styled.div`
   > img {
     border-radius: ${Radius.SMALL} ${Radius.SMALL} 0 0;
+    height: 128px;
+    width: 192px;
   }
 `;
 

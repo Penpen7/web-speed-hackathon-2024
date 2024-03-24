@@ -70,7 +70,7 @@ const TopPage: React.FC = () => {
             本日更新
           </Text>
           <Spacer height={Space * 2} />
-          <Box maxWidth="100%" overflowX="scroll" overflowY="hidden" minHeight="290px">
+          <Box maxWidth="100%" overflowX="scroll" overflowY="hidden" height="290px">
             <Flex align="stretch" gap={Space * 2} justify="flex-start">
               {_.map(release.books, (book) => (
                 <BookCard key={book.id} bookId={book.id} book={book} />
