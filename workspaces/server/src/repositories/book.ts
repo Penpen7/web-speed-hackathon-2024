@@ -15,6 +15,7 @@ import type {PatchBookResponse} from '@wsh-2024/schema/src/api/books/PatchBookRe
 import type {PostBookRequestBody} from '@wsh-2024/schema/src/api/books/PostBookRequestBody';
 import type {PostBookResponse} from '@wsh-2024/schema/src/api/books/PostBookResponse';
 import {author, book, episode, episodePage, feature, ranking} from '@wsh-2024/schema/src/models';
+import {compareWithFlags, PRIMARY as UCA_L1_FLAG, SECONDARY as UCA_L2_FLAG} from 'unicode-collation-algorithm2';
 
 import {getDatabase} from '../database/drizzle';
 
@@ -108,9 +109,6 @@ class BookRepository implements BookRepositoryInterface {
           if (options.query.name != null) {
             return like(book.name, `%${options.query.name}%`);
           }
-          if (options.query.name_ruby != null) {
-            return or(like(book.name, `%${options.query.name_ruby}%`), like(book.nameRuby, `%${options.query.name_ruby}%`));
-          }
           return;
         },
         with: {
@@ -142,8 +140,13 @@ class BookRepository implements BookRepositoryInterface {
           },
         },
       });
+      let result = data;
+      if (options.query.name_ruby != null) {
+        result = data.filter((datum) => isContains({target: datum.name, query: options.query.name_ruby}) || isContains({target: datum.nameRuby, query: options.query.name_ruby}))
+      }
+      console.log(options.query, result.length)
 
-      return ok(data);
+      return ok(result);
     } catch (cause) {
       if (cause instanceof HTTPException) {
         return err(cause);
@@ -229,3 +232,30 @@ class BookRepository implements BookRepositoryInterface {
 }
 
 export const bookRepository = new BookRepository();
+
+
+// UCA_L1_FLAG はベース文字、UCA_L2_FLAG は濁点・半濁点・アクセントを区別する (sensitivity: accent に相当)
+const SENSITIVITY_ACCENT_FLAG = UCA_L1_FLAG ^ UCA_L2_FLAG;
+
+type Params = {
+  query: string;
+  target: string;
+};
+
+// ひらがな・カタカナ・半角・全角を区別せずに文字列が含まれているかを調べる
+export function isContains({query, target}: Params): boolean {
+  // target の先頭から順に query が含まれているかを調べる
+  TARGET_LOOP: for (let offset = 0; offset <= target.length - query.length; offset++) {
+    for (let idx = 0; idx < query.length; idx++) {
+      // 1文字ずつ Unicode Collation Algorithm で比較する
+      // unicode-collation-algorithm2 は Default Unicode Collation Element Table (DUCET) を collation として使う
+      if (compareWithFlags(target[offset + idx]!, query[idx]!, SENSITIVITY_ACCENT_FLAG) !== 0) {
+        continue TARGET_LOOP;
+      }
+    }
+    // query のすべての文字が含まれていたら true を返す
+    return true;
+  }
+  // target の最後まで query が含まれていなかったら false を返す
+  return false;
+}
