@@ -1,19 +1,21 @@
-import { Suspense, useId } from 'react';
-import { useParams } from 'react-router-dom';
-import type { RouteParams } from 'regexparam';
-import { styled } from 'styled-components';
+import {Suspense, useId} from 'react';
+import {useParams} from 'react-router-dom';
+import type {RouteParams} from 'regexparam';
+import {styled} from 'styled-components';
 import invariant from 'tiny-invariant';
 
-import { useAuthor } from '../../features/author/hooks/useAuthor';
-import { BookListItem } from '../../features/book/components/BookListItem';
-import { Box } from '../../foundation/components/Box';
-import { Flex } from '../../foundation/components/Flex';
-import { Image } from '../../foundation/components/Image';
-import { Separator } from '../../foundation/components/Separator';
-import { Spacer } from '../../foundation/components/Spacer';
-import { Text } from '../../foundation/components/Text';
-import { useImage } from '../../foundation/hooks/useImage';
-import { Color, Space, Typography } from '../../foundation/styles/variables';
+import {useAuthor} from '../../features/author/hooks/useAuthor';
+import {BookListItem} from '../../features/book/components/BookListItem';
+import {Box} from '../../foundation/components/Box';
+import {Flex} from '../../foundation/components/Flex';
+import {Image} from '../../foundation/components/Image';
+import {Separator} from '../../foundation/components/Separator';
+import {Spacer} from '../../foundation/components/Spacer';
+import {Text} from '../../foundation/components/Text';
+import {useImage} from '../../foundation/hooks/useImage';
+import {CommonLayout} from '../../foundation/layouts/CommonLayout';
+import {Color, Space, Typography} from '../../foundation/styles/variables';
+import {ErrorBoundary} from "react-error-boundary";
 
 const _HeadingWrapper = styled.section`
   display: grid;
@@ -32,12 +34,15 @@ const _AuthorImageWrapper = styled.div`
 `;
 
 const AuthorDetailPage: React.FC = () => {
-  const { authorId } = useParams<RouteParams<'/authors/:authorId'>>();
+  const {authorId} = useParams<RouteParams<'/authors/:authorId'>>();
   invariant(authorId);
 
-  const { data: author } = useAuthor({ params: { authorId } });
+  const {data: author, error} = useAuthor({params: {authorId}});
+  if (error) {
+    return <></>
+  }
 
-  const imageUrl = useImage({ height: 128, imageId: author.image.id, width: 128 });
+  const imageUrl = useImage({height: 128, imageId: author.image.id, width: 128});
   const bookListA11yId = useId();
 
   return (
@@ -88,10 +93,12 @@ const AuthorDetailPage: React.FC = () => {
 
 const AuthorDetailPageWithSuspense: React.FC = () => {
   return (
-    <Suspense fallback={null}>
-      <AuthorDetailPage />
-    </Suspense>
+    <ErrorBoundary fallback={<CommonLayout />}>
+      <Suspense fallback={<CommonLayout />}>
+        <AuthorDetailPage />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
-export { AuthorDetailPageWithSuspense as AuthorDetailPage };
+export {AuthorDetailPageWithSuspense as AuthorDetailPage};

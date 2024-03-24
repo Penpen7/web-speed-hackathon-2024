@@ -18,7 +18,8 @@ import {Spacer} from '../../foundation/components/Spacer';
 import {Text} from '../../foundation/components/Text';
 import {useImage} from '../../foundation/hooks/useImage';
 import {Color, Space, Typography} from '../../foundation/styles/variables';
-
+import {CommonLayout} from '../../foundation/layouts/CommonLayout';
+import {ErrorBoundary} from "react-error-boundary";
 import {BottomNavigator} from './internal/BottomNavigator';
 
 const _HeadingWrapper = styled.section`
@@ -126,9 +127,11 @@ const BookDetailPage: React.FC = () => {
 
 const BookDetailPageWithSuspense: React.FC = () => {
   return (
-    <Suspense fallback={null}>
-      <BookDetailPage />
-    </Suspense>
+    <ErrorBoundary fallback={<CommonLayout />}>
+      <Suspense fallback={<CommonLayout />}>
+        <BookDetailPage />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

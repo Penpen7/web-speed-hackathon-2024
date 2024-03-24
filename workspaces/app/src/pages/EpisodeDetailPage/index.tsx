@@ -13,6 +13,8 @@ import {Separator} from '../../foundation/components/Separator';
 import {Space} from '../../foundation/styles/variables';
 
 import {ComicViewer} from './internal/ComicViewer';
+import {ErrorBoundary} from "react-error-boundary";
+import {CommonLayout} from '../../foundation/layouts/CommonLayout';
 
 const EpisodeDetailPage: React.FC = () => {
   const {bookId, episodeId} = useParams<RouteParams<'/books/:bookId/episodes/:episodeId'>>();
@@ -44,9 +46,11 @@ const EpisodeDetailPage: React.FC = () => {
 
 const EpisodeDetailPageWithSuspense: React.FC = () => {
   return (
-    <Suspense fallback={null}>
-      <EpisodeDetailPage />
-    </Suspense>
+    <ErrorBoundary fallback={<CommonLayout />}>
+      <Suspense fallback={<CommonLayout />}>
+        <EpisodeDetailPage />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
