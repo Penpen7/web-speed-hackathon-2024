@@ -15,7 +15,6 @@ type Props = {
 
 export const SearchResult: React.FC<Props> = ({keyword}) => {
   const {data: books} = useBookListFallBackDataEmpty({query: {name_ruby: keyword}});
-  console.log("a", books, "a")
   return (
     <Flex align="center" as="ul" direction="column" justify="center">
       <Suspense

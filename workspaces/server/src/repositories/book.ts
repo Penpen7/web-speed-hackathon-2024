@@ -144,7 +144,6 @@ class BookRepository implements BookRepositoryInterface {
       if (options.query.name_ruby != null) {
         result = data.filter((datum) => isContains({target: datum.name, query: options.query.name_ruby}) || isContains({target: datum.nameRuby, query: options.query.name_ruby}))
       }
-      console.log(options.query, result.length)
 
       return ok(result);
     } catch (cause) {
