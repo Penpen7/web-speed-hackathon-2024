@@ -24,6 +24,7 @@ const SearchPage: React.FC = () => {
     setIsClient(true);
   }, []);
 
+
   return (
     <Box px={Space * 2}>
       <Input disabled={!isClient} onChange={onChangedInput} />

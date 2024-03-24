@@ -7,5 +7,5 @@ export function useBookList(...[options]: Parameters<typeof bookApiClient.fetchL
 }
 
 export function useBookListFallBackDataEmpty(...[options]: Parameters<typeof bookApiClient.fetchList>) {
-  return useSWR(bookApiClient.fetchList$$key(options), bookApiClient.fetchList, {suspense: true, fallbackData: []});
+  return useSWR(bookApiClient.fetchList$$key(options), bookApiClient.fetchList, {suspense: true, fallbackData: null});
 }

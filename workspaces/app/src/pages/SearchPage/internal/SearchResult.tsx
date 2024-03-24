@@ -15,9 +15,6 @@ type Props = {
 
 export const SearchResult: React.FC<Props> = ({keyword}) => {
   const {data: books} = useBookListFallBackDataEmpty({query: {name_ruby: keyword}});
-  if (!books) {
-    return <></>
-  }
   console.log("a", books, "a")
   return (
     <Flex align="center" as="ul" direction="column" justify="center">
@@ -28,15 +25,22 @@ export const SearchResult: React.FC<Props> = ({keyword}) => {
           </Text>
         }
       >
-        {books.map((book) => (
-          <BookListItemExplicit book={book} key={book.id} />
-        ))}
-        {books.length === 0 && (
+        {books == null ?
           <Text color={Color.MONO_100} typography={Typography.NORMAL14}>
-            関連作品は見つかりませんでした
-          </Text>
-        )}
+            「{keyword}」を検索中...
+          </Text> :
+          <>
+            {typeof books === "object" ?
+              books.map((book) => (
+                <BookListItemExplicit book={book} key={book.id} />
+              )) :
+              < Text color={Color.MONO_100} typography={Typography.NORMAL14}>
+                関連作品は見つかりませんでした
+              </Text>
+            }
+          </>
+        }
       </Suspense>
-    </Flex>
+    </Flex >
   );
 };
