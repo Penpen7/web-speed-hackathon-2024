@@ -7,14 +7,18 @@ import {Flex} from '../../../foundation/components/Flex';
 import {Text} from '../../../foundation/components/Text';
 import {Color, Typography} from '../../../foundation/styles/variables';
 import {isContains} from '../../../lib/filter/isContains';
-import {useBookList} from '../../../features/book/hooks/useBookList';
+import {useBookListFallBackDataEmpty} from '../../../features/book/hooks/useBookList';
 
 type Props = {
   keyword: string;
 };
 
-export const SearchResult: React.FC<Props> = ({books, keyword}) => {
-  console.log("books", books)
+export const SearchResult: React.FC<Props> = ({keyword}) => {
+  const {data: books} = useBookListFallBackDataEmpty({query: {name_ruby: keyword}});
+  if (!books) {
+    return <></>
+  }
+  console.log("a", books, "a")
   return (
     <Flex align="center" as="ul" direction="column" justify="center">
       <Suspense

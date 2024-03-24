@@ -13,7 +13,6 @@ const SearchPage: React.FC = () => {
 
   const [isClient, setIsClient] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const {data: books} = useBookList({query: {name_ruby: keyword}});
 
   const onChangedInput = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +31,7 @@ const SearchPage: React.FC = () => {
         <Text color={Color.MONO_100} id={searchResultsA11yId} typography={Typography.NORMAL20} weight="bold">
           検索結果
         </Text>
-        {keyword !== '' && <SearchResult books={books} keyword={keyword} />}
+        {keyword !== '' && <SearchResult keyword={keyword} />}
       </Box>
     </Box>
   );
@@ -40,9 +39,7 @@ const SearchPage: React.FC = () => {
 
 const SearchPageWithSuspense: React.FC = () => {
   return (
-    <Suspense fallback={null}>
-      <SearchPage />
-    </Suspense>
+    <SearchPage />
   );
 };
 
