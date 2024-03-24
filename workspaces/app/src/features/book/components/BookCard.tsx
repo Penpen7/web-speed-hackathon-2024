@@ -105,7 +105,6 @@ const BookCardExplicit: React.FC<Props> = ({book}) => {
 };
 
 const BookCardWithSuspense: React.FC<Props> = (props) => {
-  console.log(props.book)
 
   return (
     <Suspense fallback={null}>

@@ -1,27 +1,25 @@
-import { Suspense, useCallback, useEffect, useId, useState } from 'react';
+import {Suspense, useCallback, useEffect, useId, useState} from 'react';
 
-import { useBookList } from '../../features/book/hooks/useBookList';
-import { Box } from '../../foundation/components/Box';
-import { Text } from '../../foundation/components/Text';
-import { Color, Space, Typography } from '../../foundation/styles/variables';
+import {Box} from '../../foundation/components/Box';
+import {Text} from '../../foundation/components/Text';
+import {Color, Space, Typography} from '../../foundation/styles/variables';
 
-import { Input } from './internal/Input';
-import { SearchResult } from './internal/SearchResult';
+import {Input} from './internal/Input';
+import {SearchResult} from './internal/SearchResult';
+import {useBookList} from '../../features/book/hooks/useBookList';
 
 const SearchPage: React.FC = () => {
-  const { data: books } = useBookList({ query: {} });
-
   const searchResultsA11yId = useId();
 
   const [isClient, setIsClient] = useState(false);
   const [keyword, setKeyword] = useState('');
+  const {data: books} = useBookList({query: {name_ruby: keyword}});
 
   const onChangedInput = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setKeyword(event.target.value);
     },
-    [setKeyword],
-  );
+    [setKeyword])
 
   useEffect(() => {
     setIsClient(true);
@@ -48,4 +46,4 @@ const SearchPageWithSuspense: React.FC = () => {
   );
 };
 
-export { SearchPageWithSuspense as SearchPage };
+export {SearchPageWithSuspense as SearchPage};
