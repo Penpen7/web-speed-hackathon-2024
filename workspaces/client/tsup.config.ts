@@ -23,6 +23,7 @@ export default defineConfig(async (): Promise<Options[]> => {
       entry: {
         client: path.resolve(PACKAGE_DIR, './src/index.tsx'),
         serviceworker: path.resolve(PACKAGE_DIR, './src/serviceworker/index.ts'),
+        admin: path.resolve(PACKAGE_DIR, '../admin/src/index.tsx'),
       },
       env: {
         API_URL: '',
