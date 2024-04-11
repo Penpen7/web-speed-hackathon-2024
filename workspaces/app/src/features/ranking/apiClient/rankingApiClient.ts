@@ -12,10 +12,23 @@ type RankingApiClient = DomainSpecificApiClientInterface<{
 
 export const rankingApiClient: RankingApiClient = {
   fetchList: async ({ query }) => {
-    const response = await apiClient.get<GetRankingListResponse>(inject('/api/v1/rankings', {}), {
-      params: query,
+    const params = new URLSearchParams();
+    Object.entries(query).forEach(([key, value]) => {
+      if (value) {
+        params.append(key, value.toString());
+      }
     });
-    return response.data;
+    let url = `/api/v1/rankings`;
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then<GetRankingListResponse>((res) => (res.ok ? res.json() : Promise.reject(new Error('Failed to fetch'))));
+    return response;
   },
   fetchList$$key: (options) => ({
     requestUrl: `/api/v1/rankings`,
