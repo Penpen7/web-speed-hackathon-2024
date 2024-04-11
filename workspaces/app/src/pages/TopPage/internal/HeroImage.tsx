@@ -6,5 +6,5 @@ const _Image = styled.img`
 `;
 
 export const HeroImage: React.FC = () => {
-  return <_Image src="/assets/hero-image.png" alt="Cyber TOON" />;
+  return <_Image src="/assets/hero-image.webp" alt="Cyber TOON" />;
 };
