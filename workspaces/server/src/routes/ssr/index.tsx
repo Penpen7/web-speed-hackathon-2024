@@ -1,77 +1,41 @@
-import fs from 'node:fs/promises';
-
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
-import jsesc from 'jsesc';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { ServerStyleSheet } from 'styled-components';
-import { unstable_serialize } from 'swr';
-
-import { featureApiClient } from '@wsh-2024/app/src/features/feature/apiClient/featureApiClient';
-import { rankingApiClient } from '@wsh-2024/app/src/features/ranking/apiClient/rankingApiClient';
-import { releaseApiClient } from '@wsh-2024/app/src/features/release/apiClient/releaseApiClient';
 import { ClientApp } from '@wsh-2024/app/src/index';
-import { getDayOfWeekStr } from '@wsh-2024/app/src/lib/date/getDayOfWeekStr';
-
-import { INDEX_HTML_PATH } from '../../constants/paths';
 
 const app = new Hono();
 
-async function createInjectDataStr(): Promise<Record<string, unknown>> {
-  const json: Record<string, unknown> = {};
-
-  {
-    const date = new Date();
-    const dayOfWeek = getDayOfWeekStr(date);
-
-    const releases = await releaseApiClient.fetch({ params: { dayOfWeek } });
-    json[unstable_serialize(releaseApiClient.fetch$$key({ params: { dayOfWeek } }))] = releases;
-  }
-
-  {
-    const features = await featureApiClient.fetchList({ query: {} });
-    json[unstable_serialize(featureApiClient.fetchList$$key({ query: {} }))] = features;
-  }
-
-  {
-    const ranking = await rankingApiClient.fetchList({ query: {} });
-    json[unstable_serialize(rankingApiClient.fetchList$$key({ query: {} }))] = ranking;
-  }
-
-  return json;
-}
-
-async function createHTML({
-  body,
-  injectData,
-  styleTags,
-}: {
-  body: string;
-  injectData: Record<string, unknown>;
-  styleTags: string;
-}): Promise<string> {
-  const htmlContent = await fs.readFile(INDEX_HTML_PATH, 'utf-8');
+async function createHTML({ body, styleTags }: { body: string; styleTags: string }): Promise<string> {
+  const htmlContent = `
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link href="/assets/favicon.ico" rel="icon" />
+    <title>WSH 2024</title>
+    <link as="image" crossorigin="anonymous" href="/assets/cyber-toon.svg" rel="preload" />
+    <script id="inject-data" type="application/json"></script>
+    <script type="text/javascript" src="/client.global.js" defer></script>
+    <style id="tag"></style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+  `;
 
   const content = htmlContent
     .replaceAll('<div id="root"></div>', `<div id="root">${body}</div>`)
-    .replaceAll('<style id="tag"></style>', styleTags)
-    .replaceAll(
-      '<script id="inject-data" type="application/json"></script>',
-      `<script id="inject-data" type="application/json">
-        ${jsesc(injectData, {
-          isScriptContext: true,
-          json: true,
-          minimal: true,
-        })}
-      </script>`,
-    );
+    .replaceAll('<style id="tag"></style>', styleTags);
 
   return content;
 }
 
 app.get('*', async (c) => {
-  const injectData = await createInjectDataStr();
   const sheet = new ServerStyleSheet();
 
   try {
@@ -84,7 +48,7 @@ app.get('*', async (c) => {
     );
 
     const styleTags = sheet.getStyleTags();
-    const html = await createHTML({ body, injectData, styleTags });
+    const html = await createHTML({ body, styleTags });
 
     return c.html(html);
   } catch (cause) {
