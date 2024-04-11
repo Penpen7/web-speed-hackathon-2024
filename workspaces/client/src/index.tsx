@@ -8,9 +8,9 @@ import { ClientApp } from '@wsh-2024/app/src/index';
 import { registerServiceWorker } from './utils/registerServiceWorker';
 
 const main = async () => {
-  registerServiceWorker();
+  await registerServiceWorker();
 
-  document.addEventListener('DOMContentLoaded', () => {
+  const fn = () => {
     if (window.location.pathname.startsWith('/admin')) {
       ReactDOM.createRoot(document.getElementById('root')!).render(<AdminApp />);
     } else {
@@ -23,7 +23,13 @@ const main = async () => {
         </SWRConfig>,
       );
     }
-  });
+  };
+
+  if (document.readyState !== 'loading') {
+    fn();
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
 };
 
 main().catch(console.error);
