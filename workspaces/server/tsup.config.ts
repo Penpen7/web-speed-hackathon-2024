@@ -25,7 +25,7 @@ export default defineConfig(async (): Promise<Options[]> => {
       minify: false,
       noExternal: [/@wsh-2024\/.*/],
       outDir: OUTPUT_DIR,
-      shims: true,
+      shims: false,
       sourcemap: true,
       splitting: false,
       target: 'node18',
