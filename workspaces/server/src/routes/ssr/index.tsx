@@ -18,6 +18,7 @@ async function createHTML({ body, styleTags }: { body: string; styleTags: string
     <link href="/assets/favicon.ico" rel="icon" />
     <title>WSH 2024</title>
     <link as="image" crossorigin="anonymous" href="/assets/cyber-toon.svg" rel="preload" />
+    <link as="image" crossorigin="anonymous" href="/assets/hero-image.webp" rel="preload" />
     <script id="inject-data" type="application/json"></script>
     <script type="text/javascript" src="/client.global.js" defer></script>
     <style id="tag"></style>
